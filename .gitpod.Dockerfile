@@ -2,6 +2,10 @@ FROM gitpod/workspace-mysql
                     
 USER gitpod
 
+RUN sudo mkdir /var/log/apache2
+
+
+
 # Install custom tools, runtime, etc. using apt-get
 # For example, the command below would install "bastet" - a command line tetris clone:
 #
