@@ -2,7 +2,7 @@ FROM gitpod/workspace-mysql
                     
 USER gitpod
 
-RUN sudo mkdir /var/log/apache2
+#RUN sudo mkdir /var/log/apache2
 
 
 
