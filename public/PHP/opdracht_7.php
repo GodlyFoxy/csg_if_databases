@@ -5,8 +5,12 @@ include('opdracht_begin.php');
 TYP HIERONDER JOUW PHPCODE
 ****************************/
 
-      $fibonacci=array(0,1,1,2,3,5,8,13,21,34,55,89,144,233,377,610,987,1597,2584,4181,6765,10946);
+      $fibonacci=array(0,1);
       
+      for($i=0; $i<28;$i++){
+          array_push($fibonacci, $fibonacci[$i]+$fibonacci[$i+1]);
+      }
+      echo "Fibonacci Array Lengte: " .count($fibonacci). " items. <br>";
       // Een while bevat een voorwaarde. Zolang er uit de voorwaarde true (WAAR) komt gaat de herhaling verder
       $n=0;
       while ($fibonacci[$n]<100) {
@@ -48,11 +52,28 @@ TYP HIERONDER JOUW PHPCODE
         }        
         if ($deel2 && $deel3) {
           $doorgaan=false;
+          $volgendeDoorgaan=true;
         }
         $deel2=false;
         $deel3=false;
       }
-      echo "<h2>".$fibonacci[$n]." is het eerste fibonaccigetal(boven 0) dat deelbaar is door 2 EN 3!</h2>";
+      echo "<h2>".$fibonacci[$n]." is het eerste fibonaccigetal(boven 0) dat deelbaar is door 2 EN 3!</h2><br>";
+      while ($volgendeDoorgaan) {
+        $n++;
+        if ($fibonacci[$n] % 2==0) {
+          $deel2=true;
+        }
+        if ($fibonacci[$n] % 3==0) {
+          $deel3=true;
+        }      
+        if ($deel2 && $deel3) {
+          $volgendeDoorgaan=false;
+        }
+        $deel2=false;
+        $deel3=false;
+      }
+      echo "<h2>".$fibonacci[$n]." is het tweede fibonaccigetal(boven 0) dat deelbaar is door 2 EN 3!</h2>";
+
 
 /****************************
 EINDE VAN JOUW PHPCODE

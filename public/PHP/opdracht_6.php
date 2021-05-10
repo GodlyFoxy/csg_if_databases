@@ -11,8 +11,8 @@ $speelveld=array(
                   array(4,5,6),
                   array(7,8,9)
                 );
-echo "<h2>De negen is numeriek: ".$speelveld[0][0];
-echo " | De zes is numeriek: ".$speelveld[0][0]."</h2>";
+echo "<h2>De negen is numeriek: ".$speelveld[2][2];
+echo " | De zes is numeriek: ".$speelveld[1][2]."</h2>";
 
 // Maak een HTML-tabel met opmaak
 echo '<table style="border-collapse: collapse; width: 450px; background: white; text-align: center; font-size: 3em;">';
