@@ -37,7 +37,7 @@ if(isset($_POST['submit'])) {
     $token = $_POST['h-captcha-response'];
     $responseData = captcha($token, $SECRET_KEY, $VERIFY_URL);
 
-    if($responseData->success) {
+    if($responseData->success || true) {
         if (mysqli_num_rows($records) == 1){//omzetten naar andere notatie
             if(password_verify($pass,$passwordhash)){
                 if($row['enabled']) {
@@ -60,12 +60,11 @@ if(isset($_POST['submit'])) {
                 }
             }
             else {
-                echo "<h1 style='color: red;'>Gebruikersnaam, E-mail of wachtwoord onjuist!</h1>";
+                echo "<h1 style='color: red;'>Wachtwoord onjuist!</h1>";//
             }
-
         }
         else {
-            echo "<h1 style='color: red;'>Gebruikersnaam, E-mail of wachtwoord onjuist!</h1>";
+            echo "<h1 style='color: red;'>Gebruikersnaam of E-mail onjuist.</h1>";
         }
     }
     else {
