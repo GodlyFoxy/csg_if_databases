@@ -42,6 +42,12 @@ if(isset($_POST['submit'])) {
         if(empty($_POST['gebruikersnaam'])) {
             $error = "Gebruikersnaam is required.";
         }
+        else if(empty($_POST['wachtwoord'])) {
+            $error = "Wachtwoord is required.";
+        }
+        else if(empty($_POST['email'])) {
+            $error = "Email is required.";
+        }
         
         if (mysqli_num_rows($records) == 0 && empty($error)){
         
