@@ -2,11 +2,13 @@
 error_reporting(E_ALL & ~E_NOTICE);
 session_start();
 require('php/database.php');
+require('php/hcaptcha.php');
 
 //maak databaseverbinding met de gegevens uit database.php
-$DBverbinding = mysqli_connect($servernaam, $gebruikersnaam, $wachtwoord, $database);
+//maak databaseverbinding met de gegevens uit database.php
+$conn = new mysqli($servernaam, $gebruikersnaam, $wachtwoord, $database);
 // Controleer de verbinding
-if (!$DBverbinding) {
+if ($conn->connect_error) {
 // Geef de foutmelding die de server teruggeeft en stop met de uitvoer van PHP (die)
 die("Verbinding mislukt: " . mysqli_connect_error());
 }
@@ -16,21 +18,43 @@ echo '<i>verbinding database succesvol</i>';
 }
 
 if(isset($_POST['submit'])) {
+
     $naam=$_POST['gebruikersnaam'];
     $pass=password_hash($_POST['wachtwoord'], PASSWORD_BCRYPT);
     $email=$_POST['email'];
-    $sql="SELECT * FROM users WHERE (username='".$naam."' OR email='".$email."')LIMIT 1";
-    $records = mysqli_query($DBverbinding, $sql);
-    if (mysqli_num_rows($records) == 0){
-       
 
-        $query = "INSERT INTO users(username, passwordhash, email, enabled) VALUES ('".$naam."', '".$pass."', '".$email."', 1)";
-        mysqli_query($DBverbinding, $query);
-        header("Location: signup.php");
-        exit();
+    $stmt = $conn->prepare("SELECT * FROM users WHERE (username=(?) OR email=(?)LIMIT 1");
+    $stmt->bind_param("ss", $naam, $email);
+    $stmt->execute();
+
+    $records=$stmt->get_result();
+    $stmt->close();
+
+    $row = $records->fetch_assoc();
+
+
+    $token = $_POST['h-captcha-response'];
+    $responseData = captcha($token,$SECRET_KEY,$VERIFY_URL);
+
+    if($responseData->success) {
+        if (mysqli_num_rows($records) == 0){
+        
+
+            $stmt = $conn->prepare("INSERT INTO users(username, passwordhash, email) VALUES (?, ?, ?)");
+            //$enabled = 1;
+            $stmt->bind_param('sss', $naam, $pass, $email);
+            $stmt->execute();
+            $stmt->close();
+
+            header("Location: signup.php");
+            exit();
+        }
+        else {
+            echo "<h1 style='color: red;'>Gebruikersnaam bezet of email al gebruikt.</h1>";
+        }
     }
     else {
-        echo "<h1 style='color: red;'>Gebruikersnaam bezet of email al gebruikt.</h1>";
+        echo "<h1 style='color: red;'>Doe de captcha opnieuw!</h1>";
     }
 }
 
@@ -38,7 +62,7 @@ if(isset($_POST['submit'])) {
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Startpagina</title>
+        <title>Registreer</title>
         <link rel="stylesheet" type="text/css" href="css/design.css">
          <!-- hcaptcha -->
         <script src="https://hcaptcha.com/1/api.js" async defer></script>
