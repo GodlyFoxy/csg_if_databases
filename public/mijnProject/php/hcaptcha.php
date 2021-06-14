@@ -19,4 +19,4 @@ function captcha($token, $SECRET_KEY, $VERIFY_URL) {
 
     return $responseData;
 }
-?>
+//END OF FILE

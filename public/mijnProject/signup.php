@@ -5,7 +5,6 @@ require('php/database.php');
 require('php/hcaptcha.php');
 
 //maak databaseverbinding met de gegevens uit database.php
-//maak databaseverbinding met de gegevens uit database.php
 $conn = new mysqli($servernaam, $gebruikersnaam, $wachtwoord, $database);
 // Controleer de verbinding
 if ($conn->connect_error) {
@@ -25,7 +24,7 @@ if(isset($_POST['submit'])) {
 
     $error="";
 
-    $stmt = $conn->prepare("SELECT * FROM users WHERE (username=(?) OR email=(?))LIMIT 1");
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username=(?) OR email=(?) LIMIT 1");
     $stmt->bind_param("ss", $naam, $email);
     $stmt->execute();
 

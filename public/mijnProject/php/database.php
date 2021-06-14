@@ -2,5 +2,6 @@
 $servernaam = "localhost";
 $gebruikersnaam = "username";
 $wachtwoord = "password";
-$database = "accounts";
-?>
+$database = "review_website";
+
+//END OF FILE

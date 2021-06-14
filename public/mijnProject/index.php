@@ -22,7 +22,7 @@ if(isset($_POST['submit'])) {
     $naam=$_POST['gebruikersnaam'];
     $pass=$_POST['wachtwoord'];
 
-    $stmt = $conn->prepare("SELECT * FROM users WHERE (username=(?) OR email=(?)) LIMIT 1");
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username=(?) OR email=(?) LIMIT 1");
     $stmt->bind_param('ss', $naam, $naam);
     $stmt->execute();
 
@@ -39,7 +39,8 @@ if(isset($_POST['submit'])) {
     $responseData = captcha($token, $SECRET_KEY, $VERIFY_URL);
 
     if($responseData->success || true) {
-        if (mysqli_num_rows($records) == 1){//omzetten naar andere notatie
+        //omzetten naar andere notatie
+        if (mysqli_num_rows($records) == 1){
             if(password_verify($pass,$passwordhash)){
                 if($row['enabled']) {
                     $_SESSION["user"]= $username;   
@@ -47,7 +48,8 @@ if(isset($_POST['submit'])) {
                     //$ip = "$_SERVER[REMOTE_ADDR]";
                     $stmt = $conn->prepare("UPDATE users SET lastIP=(?),lastLogin=(?) WHERE username=(?)");
                     $ip=$_SERVER['REMOTE_ADDR'];
-                    $timedate = date('Y-m-d H:i:s'); //servertijd UTC0
+                    //servertijd UTC0
+                    $timedate = date('Y-m-d H:i:s'); 
                     $stmt->bind_param('sss',$ip, $timedate, $username);
                     $stmt->execute();
 
@@ -109,26 +111,29 @@ if (isset($_SESSION["user"])) {
                 <?php echo 'een <strong>klein</strong> stukje PHP<br>';?>
             </h1>
             <?php 
-            if(!$_SESSION['user']) { echo'
-            <form method="POST" action="">
-                <label>Gebruiker</label>
-                <input type="text" name="gebruikersnaam" placeholder="voer uw gebruikersnaam of email in..."><br><br>
-                <label>Wachtwoord</label>
-                <input type="password" name="wachtwoord" placeholder="Geef uw wachtwoord...">
-                <input type="submit" name="submit"><br><br>
+            if(!isset($_SESSION['user'])) { 
+                echo <<<HTML
+                <form method="POST" action="">
+                    <label>Gebruiker</label>
+                    <input type="text" name="gebruikersnaam" placeholder="voer uw gebruikersnaam of email in..."><br><br>
+                    <label>Wachtwoord</label>
+                    <input type="password" name="wachtwoord" placeholder="Geef uw wachtwoord...">
+                    <input type="submit" name="submit"><br><br>
 
-                <!-- hcaptcha -->
-                <div class="h-captcha" data-sitekey="254a11ac-8587-4306-aa5b-52e6d9f2d227"></div>
+                    <!-- hcaptcha -->
+                    <div class="h-captcha" data-sitekey="254a11ac-8587-4306-aa5b-52e6d9f2d227"></div>
 
-                <input type="submit" name="signup" value="Geen account? Klik hier!">
-            </form>';
+                    <input type="submit" name="signup" value="Geen account? Klik hier!">
+                </form>  
+                HTML;
             }
-            else{
-            echo'
-            <form method="POST" action="">
-                <input type="submit" name="loguit" value="log uit">
-            </form>';}
-            ?>
+            else {
+                echo <<<HTML
+                <form method="POST" action="">
+                    <input type="submit" name="loguit" value="log uit">
+                </form>
+                HTML;
+            }?>
         </div>
     </body>
 </html>
