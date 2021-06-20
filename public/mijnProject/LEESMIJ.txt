@@ -1,1 +1,1 @@
-We proberen voor PHP de volgende PHP style recommendation (https://www.php-fig.org/psr/): 1 en 12
+We proberen voor PHP de volgende PHP style recommendations (https://www.php-fig.org/psr/): 1 en 12

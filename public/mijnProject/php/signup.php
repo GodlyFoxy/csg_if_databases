@@ -4,7 +4,7 @@ session_start();
 require('php/database.php');
 require('php/hcaptcha.php');
 
-//maak databaseverbinding met de gegevens uit database.php
+/*//maak databaseverbinding met de gegevens uit database.php
 $conn = new mysqli($servernaam, $gebruikersnaam, $wachtwoord, $database);
 // Controleer de verbinding
 if ($conn->connect_error) {
@@ -14,7 +14,7 @@ die("Verbinding mislukt: " . mysqli_connect_error());
 else {
 // Dit gedeelte laat je normaliter weg, maar is hier ter illustratie toegevoegd
 echo '<i>verbinding database succesvol</i>';
-}
+}*/
 
 if(isset($_POST['submit'])) {
 
@@ -92,20 +92,20 @@ if(isset($_POST['submit'])) {
             <h1>
                 <?php echo 'een <strong>klein</strong> stukje PHP<br>';?>
             </h1>
-            <?php if(!$_SESSION['user']) { echo'
+            <?php if(!$_SESSION['user']) { 
+                echo <<<HTML
                 <form method="POST" action="">
                     <label>Gebruiker</label>
-                    <input type="text" name="gebruikersnaam" placeholder="Kies een gebruikersnaam..."><br><br>
+                    <input type="text" name="gebruikersnaam" placeholder="Kies een gebruikersnaam..." required><br><br>
                     <label>Wachtwoord</label>
-                    <input type="password" name="wachtwoord" placeholder="Geef uw wachtwoord..."><br><br>
+                    <input type="password" name="wachtwoord" placeholder="Geef uw wachtwoord..." required><br><br>
                     <label>email</label>
-                    <input type="text" name="email" placeholder="Geef uw email...">
+                    <input type="text" name="email" placeholder="Geef uw email..." required>
                     <input type="submit" name="submit" value="registreer"><br><br>
-
                     <!-- hcaptcha -->
                     <div class="h-captcha" data-sitekey="254a11ac-8587-4306-aa5b-52e6d9f2d227"></div>
-                
-                    </form>';
+                    </form>
+                HTML;
             }
             else {
                 echo "<h1 style='color: red;'>U heeft al een account en u bent al ingelogd.</h1>";
