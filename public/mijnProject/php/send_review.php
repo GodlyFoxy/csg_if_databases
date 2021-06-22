@@ -35,20 +35,19 @@ if(isset($_POST['review'])) {
 
                 $stmt->close();
                 //Review verzonden
-                $_SESSION["error"] = 'R0';
-                header("Location: /mijnProject/index.php");
+                $_SESSION["notification"] = 'R0';
+                header("Location: ../index.php");
                 exit();
         }
         else {
                 //Account is gedeactiveerd!
-                $_SESSION["error"] = 1;
-                header("Location: /mijnProject/index.php");
-        }
-        
+                $_SESSION["notification"] = 1;
+                header("Location: ../index.php");
+        } 
     }
     else {
         //Doe de captcha opnieuw!
-        $_SESSION["error"] = 2;
-        header("Location: /mijnProject/index.php");
+        $_SESSION["notification"] = 2;
+        header("Location: ../index.php");
     }
 } 

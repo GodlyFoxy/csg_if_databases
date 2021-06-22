@@ -1,13 +1,10 @@
 <?php
-
+include_once('php/preload.php');
+include('php/averageRating.php');
 error_reporting(E_ALL & ~E_NOTICE);
 session_start();
 
-if(isset($_POST['loguit'])) {
-    
-    session_destroy();
-    header("Location: index.php");
-}
+$pageTitle = "Startpagina";
 
 if(isset($_POST['signup'])) {
     header("Location: signup.php");
@@ -17,11 +14,15 @@ if (isset($_SESSION["user"])) {
     echo "<h1 style='color: green;'>Welkom ".$_SESSION["user"]."</h1>";
 }
 
-if (isset($_SESSION["error"])) {
-    switch ($_SESSION["error"]) {
+if (isset($_SESSION["notification"])) {
+    switch ($_SESSION["notification"]) {
     // Review
     case 'R0':
         echo "Review verzonden.";
+        break;
+    // Loguit
+    case 'L0':
+        echo "Uitgelogd.";
         break;
     // Algemeen
     case 1:
@@ -42,62 +43,64 @@ if (isset($_SESSION["error"])) {
         echo "Doe de captcha opnieuw";
         break;
     }
-    unset($_SESSION['error']);
+    unset($_SESSION['notification']);
 }
-
+include $template['header']
 ?>
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Startpagina</title>
-        <link rel="stylesheet" type="text/css" href="css/design.css">
-        <!-- hcaptcha -->
-        <script src="https://hcaptcha.com/1/api.js" async defer></script>
-
-    </head>
-    <body>
-        <div id="container">
-            <h1>
-                <?php echo 'een <strong>klein</strong> stukje PHP<br>';?>
-            </h1>
-            <?php 
-            if(!isset($_SESSION['user'])) { 
-                echo <<<HTML
-                <form method="POST" action="php/login.php">
-                    <label>Gebruiker</label>
-                    <input type="text" name="gebruikersnaam" placeholder="voer uw gebruikersnaam of email in..." required><br><br>
-                    <label>Wachtwoord</label>
-                    <input type="password" name="wachtwoord" placeholder="Geef uw wachtwoord..." required>
-                    <input type="submit" name="submit"><br><br>
-                    <!-- hcaptcha -->
-                    <div class="h-captcha" data-sitekey="254a11ac-8587-4306-aa5b-52e6d9f2d227"></div>
-                </form>  
-                <form method="POST" action="">
-                    <input type="submit" name="signup" value="Geen account? Klik hier!">
-                </form>  
-                HTML;
-            }
-            else {
-                echo <<<HTML
-                <form method="POST" action="php/send_review.php">
-                <!-- http://web.archive.org/web/20161123092558/http://rog.ie/blog/css-star-rater -->
-                    <strong class="choice">Choose a rating</strong><br>
-                    <span class="star-rating">
-                        <input type="radio" name="rating" value="1"><i></i>
-                        <input type="radio" name="rating" value="2"><i></i>
-                        <input type="radio" name="rating" value="3"><i></i>
-                        <input type="radio" name="rating" value="4"><i></i>
-                        <input type="radio" name="rating" value="5"><i></i>
-                    </span> <br><br>
-                    <input type="text" name="comment" placeholder="Type hier uw review...">
-                    <input type="submit" name="review" value="Verstuur review"><br><br>
-                    <div class="h-captcha" data-sitekey="254a11ac-8587-4306-aa5b-52e6d9f2d227"></div>
-                </form>
-                <form method="POST" action="">
-                    <input type="submit" name="loguit" value="log uit">
-                </form>
-                HTML;
-            }?>
-        </div>
-    </body>
-</html>
+<body>
+    <div id="container">
+        <h1>
+            <?php echo 'een <strong>klein</strong> stukje PHP<br>';?>
+        </h1>
+        <?php 
+        if(!isset($_SESSION['user'])) { 
+            echo <<<HTML
+            <form method="POST" action="php/login.php">
+                <label>Gebruiker</label>
+                <input type="text" name="gebruikersnaam" placeholder="voer uw gebruikersnaam of email in..." required><br><br>
+                <label>Wachtwoord</label>
+                <input type="password" name="wachtwoord" placeholder="Geef uw wachtwoord..." required>
+                <input type="submit" name="submit"><br><br>
+                <!-- hcaptcha -->
+                <div class="h-captcha" data-sitekey="254a11ac-8587-4306-aa5b-52e6d9f2d227"></div>
+            </form>  
+            <form method="POST" action="">
+                <input type="submit" name="signup" value="Geen account? Klik hier!">
+            </form>  
+            HTML;
+        }
+        else {
+            $avgRating = getAverage(6);
+            echo <<<HTML
+            <form method="POST" action="php/send_review.php">
+            <!-- http://web.archive.org/web/20161123092558/http://rog.ie/blog/css-star-rater -->
+                <strong class="choice">Choose a rating</strong><br>
+                <select id="rating" name="rating">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <script type="text/javascript"> 
+                    $(function() {
+                        $('#rating').barrating('show', {
+                            theme: 'fontawesome-stars-o',
+                            initialRating: $avgRating
+                        });
+                    });
+                </script>
+                <br>
+                <textarea rows="5" name="comment" placeholder="Type een review..."></textarea>
+                <input type="submit" name="review" value="Verstuur review"><br><br>
+                <div class="h-captcha" data-sitekey="254a11ac-8587-4306-aa5b-52e6d9f2d227"></div>
+            </form>
+            <form method="POST" action="php/logout.php">
+                <input type="submit" name="loguit" value="log uit">
+            </form>
+            HTML;
+        }?>
+    </div>
+<?php
+$template['footer'];
+?>

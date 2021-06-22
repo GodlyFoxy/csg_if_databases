@@ -43,30 +43,30 @@ if(isset($_POST['submit'])) {
 
                     $stmt->close();
 
-                    header("Location: /mijnProject/index.php");
+                    header("Location: ../index.php");
                     exit();
                 }
                 else {
                     //Account gedeactiveerd
-                    $_SESSION["error"] = 1;
-                    header("Location: /mijnProject/index.php");
+                    $_SESSION["notification"] = 1;
+                    header("Location: ../index.php");
                 }
             }
             else {
                 //Wachtwoord onjuist
-                $_SESSION["error"] = 3;
-                header("Location: /mijnProject/index.php");
+                $_SESSION["notification"] = 3;
+                header("Location: ../index.php");
             }
         }
         else {
             //Gebruikersnaam of email onjuist
-            $_SESSION["error"] = 4;
-            header("Location: /mijnProject/index.php");
+            $_SESSION["notification"] = 4;
+            header("Location: ../index.php");
         }
     }
     else {
         //Doe de captcha opniew!
-        $_SESSION["error"] = 2;
-        header("Location: /mijnProject/index.php");
+        $_SESSION["notification"] = 2;
+        header("Location: ../index.php");
     }
 } 

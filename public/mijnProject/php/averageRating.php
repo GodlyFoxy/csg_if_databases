@@ -1,0 +1,17 @@
+<?php
+
+function getAverage($gameid) 
+{
+    require('database.php');
+
+    $stmt = $conn->prepare("SELECT ROUND(AVG(rating),1) as avgRating FROM reviews WHERE gameID=(?)");
+    $stmt->bind_param('i', $gameid);
+    $stmt->execute();
+
+    $records=$stmt->get_result();
+    $stmt->close();
+    $row = $records->fetch_assoc();
+
+    $avg = $row['avgRating'];
+    return $avg;
+}
