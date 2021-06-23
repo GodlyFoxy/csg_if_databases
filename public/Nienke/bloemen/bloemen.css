@@ -78,6 +78,8 @@ body {
 .blokitem {
     /* background-color: var(--zacht); */
     height: 275px;
+    margin: var(--pad) auto 80px auto;
+    float: left;
 }
 
 h1,h2 {

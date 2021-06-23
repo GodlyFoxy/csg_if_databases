@@ -1,3 +1,2 @@
 We proberen voor PHP de volgende PHP style recommendations (https://www.php-fig.org/psr/): 1 en 12
-https://makitweb.com/5-star-rating-system-with-jquery-ajax-and-php/
 https://github.com/antennaio/jquery-bar-rating 

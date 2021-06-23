@@ -14,44 +14,11 @@ if (isset($_SESSION["user"])) {
     echo "<h1 style='color: green;'>Welkom ".$_SESSION["user"]."</h1>";
 }
 
-if (isset($_SESSION["notification"])) {
-    switch ($_SESSION["notification"]) {
-    // Review
-    case 'R0':
-        echo "Review verzonden.";
-        break;
-    // Loguit
-    case 'L0':
-        echo "Uitgelogd.";
-        break;
-    // Algemeen
-    case 1:
-        echo "Account gedeactiveerd.";
-        break;
-    case 2:
-        echo "Doe de captcha opnieuw";
-        break;
-    // Login
-    case 3:
-        echo "Wachtwoord onjuist!";
-        break;
-    case 4:
-        echo "Gebruikersnaam of E-mail onjuist.";
-        break;
-    // Registratie
-    case 5:
-        echo "Doe de captcha opnieuw";
-        break;
-    }
-    unset($_SESSION['notification']);
-}
 include $template['header']
 ?>
 <body>
     <div id="container">
-        <h1>
-            <?php echo 'een <strong>klein</strong> stukje PHP<br>';?>
-        </h1>
+    <?php include('php/alert.php');?>
         <?php 
         if(!isset($_SESSION['user'])) { 
             echo <<<HTML

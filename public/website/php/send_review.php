@@ -20,6 +20,7 @@ if(isset($_POST['review'])) {
     $row = $records->fetch_assoc();
 
     $userID = $row['userID'];
+    $gameID= 6;
 
     //captcha data
     $token = $_POST['h-captcha-response'];
@@ -30,7 +31,7 @@ if(isset($_POST['review'])) {
         if($row['enabled']) {
                 $stmt = $conn->prepare("INSERT INTO reviews(userID, gameID, rating, comment) VALUES (?, ?, ?, ?)");
                 $comment=$_POST['comment'];
-                $stmt->bind_param('iiis',$userID, $userID, $rating, $comment);
+                $stmt->bind_param('iiis',$userID, $gameID, $rating, $comment);
                 $stmt->execute();
 
                 $stmt->close();
