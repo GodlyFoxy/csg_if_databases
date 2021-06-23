@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="nl">
     <head>
-        <title>Website - <?php $pageTitle?></title>
+        <title>Website - <?php echo $pageTitle; ?></title>
         <meta charset="utf-8">
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="undefined" crossorigin="anonymous">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-bar-rating@1.2.2/dist/themes/fontawesome-stars-o.css" integrity="sha256-0dPt1yDeWEWFqxjHMToED3U4O4KtYU4hqYLm3OWRtkA=" crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" href="styles/css/design.css">
+        <!--<link rel="stylesheet" type="text/css" href="styles/design.css">-->
+        <link rel="stylesheet" type="text/css" href="styles/bloemen.css">
 
 
 

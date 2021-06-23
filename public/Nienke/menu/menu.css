@@ -1,0 +1,65 @@
+body,html {
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+    background-color: silver;
+}
+
+#container {
+    background-color: dodgerblue;
+    width: 80%;
+    height: 75%;
+    margin-left: 10%;
+}
+
+#logo {
+    /* display: none; */
+    float: left;
+    margin-right: 20px;    
+    margin-top: -20px;
+    color: bisque;
+    text-transform: small-caps;
+    font-size: 60px;
+}
+
+ul {
+    padding: 0;
+    background-color: silver;
+}
+
+li {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 40px;
+    display: inline; /* inline block table */
+    /*
+    display: table;
+    width: 140px;
+    margin-bottom: 4px;
+    text-align: right;
+    */
+    border-bottom: 10px solid indianred;
+    background-color: white;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+li:hover {
+    background-color: indianred;
+}
+
+a {
+    text-decoration: none;
+    color: teal;
+}
+
+a:hover {
+    color: white;
+}
+
+h1 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;    
+    font-size: 30px;
+    color: seashell;
+    font-variant: small-caps;
+    padding-left: 20px;
+}

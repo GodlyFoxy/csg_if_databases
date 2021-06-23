@@ -1,0 +1,119 @@
+:root {
+    /* palet Purple Frog: https://www.colourlovers.com/palette/149154/Purple_Frog */
+    --donker:#3B3131;
+    --khaki: #46472B;
+    --zacht: #B5B690;
+    --creme: #F1F1DC;
+    --paars: #8F0853;
+
+    --brtotaal: 1200px;
+    --pad: 4%;
+}
+
+body {
+    background-image: url('../images/Cobblestone.jpg');
+    /* https://www.w3schools.com/cssref/css3_pr_background-size.asp */
+    background-size: cover; /* rekt uit als het moet om volledig te vullen */
+    background-size: 100% auto; /* zorgt dat de breedte goed is en past hoogte aan */
+    
+    /* https://www.w3schools.com/cssref/pr_background-position.asp */
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: var(--donker);
+    margin: 0;
+}
+
+#container {
+    width: var(--brtotaal);
+    height: auto;
+    border-top: 35px solid var(--zacht);
+    border-bottom: 35px solid var(--zacht);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#menu {
+    width: 100%;
+    height: 135px;
+    background-color: var(--donker);
+    opacity: 0.5;
+}
+
+.vierkant {
+    width: 200px;
+    height: auto;
+    border: 4px solid var(--paars);
+    margin-right: var(--pad);
+    float: left;
+}
+
+.klein {
+    width: 175px;
+    display:block;
+    margin: 0px auto 52px auto;
+    border: 2px solid var(--zacht);
+}
+
+#jumbo {
+    width: 80%;
+    display:block;
+    margin: var(--pad) auto 0px auto;
+    border: 2px dotted var(--donker);
+}
+
+#hoofdpagina {
+    width: var(--brtotaal);
+    height: 800px auto;
+    display: flex;
+}
+
+#welkom {
+    width: 75%;
+    height: 100%;
+    background-color: var(--creme);
+    padding: 0 var(--pad) 0 var(--pad);
+    text-align: justify;
+}
+
+.blokitem {
+    /* background-color: var(--zacht); */
+    height: 275px;
+}
+
+h1,h2 {
+    color: var(--paars);
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    text-transform: uppercase;
+    font-size: 2em;
+}
+
+h1 {
+    padding-left: 222px; /* niet heel chique geregeld, nu... */
+}
+
+h2 {
+    text-align: center;
+}
+
+h3 {
+    color: var(--creme);
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    text-transform: uppercase;
+    font-size: 7em;
+    letter-spacing: 0.155em;
+    -webkit-text-stroke-width: 6px;
+    -webkit-text-stroke-color:var(--paars);
+    margin: 0;
+}
+
+#welkom p {
+    color: var(--donker);
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+#reclame {
+    width: 25%;
+    height: 100% auto;
+    background-color: var(--donker);
+    padding:0 var(--pad) 0 var(--pad);
+}

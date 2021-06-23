@@ -1,20 +1,11 @@
 <?php
 error_reporting(E_ALL & ~E_NOTICE);
 session_start();
+include_once('php/preload.php');
 require('php/database.php');
 require('php/hcaptcha.php');
 
-/*//maak databaseverbinding met de gegevens uit database.php
-$conn = new mysqli($servernaam, $gebruikersnaam, $wachtwoord, $database);
-// Controleer de verbinding
-if ($conn->connect_error) {
-// Geef de foutmelding die de server teruggeeft en stop met de uitvoer van PHP (die)
-die("Verbinding mislukt: " . mysqli_connect_error());
-}
-else {
-// Dit gedeelte laat je normaliter weg, maar is hier ter illustratie toegevoegd
-echo '<i>verbinding database succesvol</i>';
-}*/
+$pageTitle = "Registreren";
 
 if(isset($_POST['submit'])) {
 
@@ -76,17 +67,8 @@ if(isset($_POST['submit'])) {
         echo "<h1 style='color: red;'>Doe de captcha opnieuw!</h1>";
     }
 }
-
+include $template['header']
 ?>
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Registreer</title>
-        <link rel="stylesheet" type="text/css" href="css/design.css">
-         <!-- hcaptcha -->
-        <script src="https://hcaptcha.com/1/api.js" async defer></script>
-
-    </head>
     <body>
         <div id="container">
             <h1>
@@ -111,5 +93,4 @@ if(isset($_POST['submit'])) {
                 echo "<h1 style='color: red;'>U heeft al een account en u bent al ingelogd.</h1>";
             }?>
         </div>
-    </body>
-</html>
+<?php include $template['footer'];?>
