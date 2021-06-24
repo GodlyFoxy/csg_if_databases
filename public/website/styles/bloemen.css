@@ -78,6 +78,8 @@ body {
 .blokitem {
     /* background-color: var(--zacht); */
     height: 275px;
+    margin: var(--pad) auto 80px auto;
+    float: left;
 }
 
 h1,h2 {
@@ -116,4 +118,10 @@ h3 {
     height: 100% auto;
     background-color: var(--donker);
     padding:0 var(--pad) 0 var(--pad);
+}
+
+/*  ZELF TOEGEVOEGD*/
+#loginbutton {
+    background-color: var(--paars);
+    border-color: var(--paars);
 }

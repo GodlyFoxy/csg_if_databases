@@ -1,8 +1,11 @@
 <?php
 include_once('php/preload.php');
 include('php/averageRating.php');
+include('php/getRecentRating.php');
 error_reporting(E_ALL & ~E_NOTICE);
 session_start();
+
+echo '<pre>'; print_r(getRecentRating()); echo '</pre>';
 
 $pageTitle = "Startpagina";
 
@@ -88,5 +91,5 @@ include $template['header']
         }?>
     </div>
 <?php
-$template['footer'];
+include $template['footer'];
 ?>

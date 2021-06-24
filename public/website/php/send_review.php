@@ -20,7 +20,7 @@ if(isset($_POST['review'])) {
     $row = $records->fetch_assoc();
 
     $userID = $row['userID'];
-    $gameID= 6;
+    $gameID= 1;
 
     //captcha data
     $token = $_POST['h-captcha-response'];
