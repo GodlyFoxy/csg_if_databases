@@ -36,7 +36,7 @@ body {
     width: 100%;
     height: 135px;
     background-color: var(--donker);
-    opacity: 0.5;
+    /*opacity: 0.5; AANPASSING*/
 }
 
 .vierkant {
@@ -75,12 +75,12 @@ body {
     text-align: justify;
 }
 
-.blokitem {
+/*.blokitem {
     /* background-color: var(--zacht); */
-    height: 275px;
+    /*height: 275px;
     margin: var(--pad) auto 80px auto;
     float: left;
-}
+}*/
 
 h1,h2 {
     color: var(--paars);
@@ -89,9 +89,9 @@ h1,h2 {
     font-size: 2em;
 }
 
-h1 {
-    padding-left: 222px; /* niet heel chique geregeld, nu... */
-}
+/*h1 {
+    padding-left: 222px;  niet heel chique geregeld, nu... 
+}*/
 
 h2 {
     text-align: center;
@@ -124,4 +124,18 @@ h3 {
 #loginbutton {
     background-color: var(--paars);
     border-color: var(--paars);
+    opacity: 1 !important;
+
+}
+
+#menu h3 {
+    opacity: 0.5;
+}
+
+/*https://www.codegrepper.com/code-examples/css/bootstrap+4+text-truncate+multiline*/
+.truncate {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }

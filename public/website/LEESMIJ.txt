@@ -1,2 +1,7 @@
 We proberen voor PHP de volgende PHP style recommendations (https://www.php-fig.org/psr/): 1 en 12
+Voor HTML en CSS: https://codeguide.co/
+
+jQuery plugins gebruikt: 
 https://github.com/antennaio/jquery-bar-rating 
+https://github.com/rmm5t/jquery-timeago/
+

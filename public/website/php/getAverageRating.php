@@ -1,6 +1,6 @@
 <?php
 
-function getAverage($gameid) 
+function getAverageRating($gameid) 
 {
     require('database.php');
 

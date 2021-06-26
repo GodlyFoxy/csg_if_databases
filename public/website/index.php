@@ -1,11 +1,9 @@
 <?php
 include_once('php/preload.php');
-include('php/averageRating.php');
-include('php/getRecentRating.php');
+include('php/getAverageRating.php');
+include('php/getRatings.php');
 error_reporting(E_ALL & ~E_NOTICE);
 session_start();
-
-echo '<pre>'; print_r(getRecentRating()); echo '</pre>';
 
 $pageTitle = "Startpagina";
 
@@ -14,20 +12,49 @@ if(isset($_POST['signup'])) {
 }
 
 if (isset($_SESSION["user"])) {
-    echo "<h1 style='color: green;'>Welkom ".$_SESSION["user"]."</h1>";
+    //echo "<h1 style='color: green;'>Welkom ".$_SESSION["user"]."</h1>";
 }
 
-include $template['header']
+
+include $template['header'];
 ?>
-<body>
+  <body>
     <div id="container">
-    <?php include('php/alert.php');?>
-        <?php 
-        if(!isset($_SESSION['user'])) { 
-            echo <<<HTML
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#login">
-                Login
-            </button>
+        <div id="menu" class="d-flex align-items-center">
+            <h3>Gamerecensies</h3>
+            <?php
+                if(!isset($_SESSION['user'])) { 
+                    echo <<<HTML
+                    <button type="button" id="loginbutton" class="btn btn-primary" data-toggle="modal" data-target="#login">
+                        Login
+                    </button>'
+                    HTML;
+                }
+            ?>
+        </div>
+        <?php include('php/alert.php');?>
+        <div id="hoofdpagina">
+            <div id="welkom">
+                <h2>Welkom op onze hoofdpagina</h2>
+                    <img id="jumbo" src="images/vaderbloem.jpg">
+                    <h1 class='text-center'>Nieuwste recensies</h1>
+                    <?php echo getRatings('3', false, true);?>
+            </div>
+            <div id="reclame">
+                <h2>Kies een game</h2>
+                <a href="">
+                <img class="klein" src="images/tulpen.jpg">
+                </a>
+                <a href="">
+                <img class="klein" src="images/hek.jpg">
+                </a>
+                <a href="">
+                <img class="klein" src="images/1.jpg">
+                </a>
+                <a href="">
+                <img class="klein" src="images/2.jpg">     
+                </a>           
+            </div>
             <div class="modal fade" id="login">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -55,41 +82,6 @@ include $template['header']
                     </div>
                 </div>
             </div>
-            HTML;
-        }
-        else {
-            $avgRating = getAverage(6);
-            echo <<<HTML
-            <form method="POST" action="php/send_review.php">
-            <!-- http://web.archive.org/web/20161123092558/http://rog.ie/blog/css-star-rater -->
-                <strong class="choice">Choose a rating</strong><br>
-                <select id="rating" name="rating">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
-                <script type="text/javascript"> 
-                var averageRating = $avgRating
-                    $(function() {
-                        $('#rating').barrating('show', {
-                            theme: 'fontawesome-stars-o',
-                            initialRating: averageRating
-                        });
-                    });
-                </script>
-                <br>
-                <textarea rows="5" name="comment" placeholder="Type een review..."></textarea>
-                <input type="submit" name="review" value="Verstuur review"><br><br>
-                <div class="h-captcha" data-sitekey="254a11ac-8587-4306-aa5b-52e6d9f2d227"></div>
-            </form>
-            <form method="POST" action="php/logout.php">
-                <input type="submit" name="loguit" value="log uit">
-            </form>
-            HTML;
-        }?>
+        </div>      
     </div>
-<?php
-include $template['footer'];
-?>
+<?php $template['footer'] ?>
