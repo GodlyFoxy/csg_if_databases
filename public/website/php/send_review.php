@@ -3,9 +3,14 @@ require('database.php');
 require('hcaptcha.php');
 session_start();
 
+$gameID = htmlspecialchars($_GET["gameID"]);
 
+if(!is_numeric($gameID) || ($gameID < 1 || $gameID > 4)) {
+    $_SESSION["alert"] = 'R0';
+    header("Location:".$_SERVER['HTTP_REFERER']);
+}
 
-if(isset($_POST['review'])) {
+if(isset($_POST['review']) && isset($gameID)) {
     $comment=$_POST['comment'];
     $username=$_SESSION['user']; 
     $rating=$_POST['rating'];
@@ -20,7 +25,6 @@ if(isset($_POST['review'])) {
     $row = $records->fetch_assoc();
 
     $userID = $row['userID'];
-    $gameID= 1;
 
     //captcha data
     $token = $_POST['h-captcha-response'];
@@ -36,19 +40,19 @@ if(isset($_POST['review'])) {
 
                 $stmt->close();
                 //Review verzonden
-                $_SESSION["notification"] = 'R0';
-                header("Location: ../index.php");
+                $_SESSION["alert"] = 'R0';
+                header("Location:".$_SERVER['HTTP_REFERER']);
                 exit();
         }
         else {
                 //Account is gedeactiveerd!
-                $_SESSION["notification"] = 1;
-                header("Location: ../index.php");
+                $_SESSION["alert"] = 1;
+                header("Location:".$_SERVER['HTTP_REFERER']);
         } 
     }
     else {
         //Doe de captcha opnieuw!
-        $_SESSION["notification"] = 2;
-        header("Location: ../index.php");
+        $_SESSION["alert"] = 2;
+        header("Location:".$_SERVER['HTTP_REFERER']);
     }
 } 

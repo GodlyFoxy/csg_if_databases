@@ -42,7 +42,7 @@ include $template['header'];
                     <div class="col">
                         <h4>Developer: <?php echo $game['developer'];?></h4>
                         <div class="row align-items-center ">
-                            <h4 class="mr-2"> Beoordeling:</h4>
+                            <h4 class="ml-3 mr-2 "> Beoordeling:</h4>
                             <select id="avgRating" name="avgRating">
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -56,7 +56,6 @@ include $template['header'];
                                         theme: 'fontawesome-stars-o',
                                         initialRating: <?php echo getAverageRating($gameID); ?>,
                                         readonly: true
-
                                     });
                                 });
                             </script>
@@ -68,31 +67,82 @@ include $template['header'];
                     <img class="figure-img img-fluid rounded" id="vierkant" src="images/<?php echo $gameID;?>.jpg">
                     <p class="ml-3"><?php echo $game['description'];?></p>
                 </div>
-                <form method="POST" action="php/send_review.php">
-                    <div class="d-flex">
-                        <textarea class="col-7" name="comment" rows="5" maxlength="255" placeholder="Type een review..."></textarea>
+                <form method="POST" action="php/send_review.php?gameID=<?php echo $gameID;?>">
+                    <div class="d-flex border rounded">
+                        <textarea class="col-7 ml-3 my-1" name="comment" rows="5" maxlength="255" placeholder="Type een review..."></textarea>
                         <div class="col">
-                            <label for="rating">Beoordeling: </label>
-                            <select id="rating" name="rating">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select>
-                            <script type="text/javascript"> 
-                                $(function() {
-                                    $('#rating').barrating('show', {
-                                        theme: 'fontawesome-stars-o'
+                            <div class="row">
+                                <label class="mr-1 ml-3" for="rating">Beoordeling: </label>
+                                <select id="rating" name="rating">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                                <script type="text/javascript"> 
+                                    $(function() {
+                                        $('#rating').barrating('show', {
+                                            theme: 'fontawesome-stars-o'
+                                        });
                                     });
-                                });
-                            </script>
-                            <input name="review" type="submit" value="Verstuur review"><br><br>
-                            <div class="h-captcha" data-sitekey="254a11ac-8587-4306-aa5b-52e6d9f2d227"></div>
+                                </script>
+                            </div>
+                            <input name="review" type="submit" value="Verstuur review">
+                            <div class="h-captcha mt-2" data-sitekey="254a11ac-8587-4306-aa5b-52e6d9f2d227"></div>
                         </div>
                     </div>
                 </form>
-                <?php echo getRatings(false,$gameID,false);?>                
+                <?php echo getRatings(false,$gameID,false,true);?> 
+                <div class="d-flex row">
+                    <p class="text-center col" id="pageNumber">page</p>
+                    <div>
+                        <div class="row h-75 mr-3">
+                            <button class="mr-1" id="prevBtn" type="button" onclick="nextPrev(-1)">Previous</button>
+                            <button class="ml-1" id="nextBtn" type="button" onclick="nextPrev(1)">Next</button>
+                        </div>
+                    </div>
+                    <!-- Circles which indicates the steps of the form: -->
+                    <script>
+                        // Overgenomen van https://www.w3schools.com/howto/howto_js_form_steps.asp?
+                        var currentTab = 0; // Current tab is set to be the first tab (0)
+                        var x = document.getElementsByClassName("tab");
+
+                        showTab(currentTab); // Display the current tab
+                        function showTab(n) {
+                        // This function will display the specified tab of the form ...
+                        x[n].style.display = "block";
+                            // ... and fix the Previous/Next buttons:
+                            if (n == 0) {
+                                document.getElementById("prevBtn").style.display = "none";
+                            } else {
+                                document.getElementById("prevBtn").style.display = "flex";
+                            }
+
+                            if (n+1 == x.length) {
+                                document.getElementById("nextBtn").style.display = "none";
+                            } else {
+                                document.getElementById("nextBtn").style.display = "flex";
+                            }
+
+                            if(x.length <= 1) {
+                                document.getElementById("pageNumber").style.display = "none";
+                            }
+                            // ... and run a function that displays the correct step indicator:
+                            document.getElementById("pageNumber").innerHTML = (n+1)+"/"+x.length;
+                        }
+
+                        function nextPrev(n) {
+                            // This function will figure out which tab to display
+                            // Hide the current tab:
+                            x[currentTab].style.display = "none";
+                            // Increase or decrease the current tab by 1:
+                            currentTab = currentTab + n;
+                            // Otherwise, display the correct tab:
+                            showTab(currentTab);
+                        }
+                    </script>      
+                </div>
             </div>
 
             <div id="reclame">

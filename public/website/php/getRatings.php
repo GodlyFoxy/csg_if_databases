@@ -1,7 +1,10 @@
 <?php
-
-function getRatings($limit, $gameID, $images) {
+//LIMIT limiteert het max aantal reviews
+//Images bool: wil je het gameplaatje ernaast
+//Pages bool: Meerdere paginas in review section
+function getRatings($limit, $gameID, $images, $pages) {
     require('database.php');
+    $reviewNumber=0;
 
     if(!$limit) {
         if(!$gameID){
@@ -30,8 +33,9 @@ function getRatings($limit, $gameID, $images) {
         $rows[] = $row;
     }
 
-    foreach($rows as $review) {
+    $amountReviews = count($rows);
 
+    foreach($rows as $review) {
         $stmt = $conn->prepare("SELECT username FROM users WHERE userID=? LIMIT 1");
         $stmt->bind_param('i', $review['userID']);
         $stmt->execute();
@@ -50,6 +54,18 @@ function getRatings($limit, $gameID, $images) {
 
         $datetime = new DateTime($review['postedAt']);
         $time = $datetime->format('c');
+
+        if($reviewNumber % 3 === 0 && $pages){
+            if($reviewNumber !== 0)
+            {
+            echo <<<HTML
+            </div>
+            HTML;
+            }
+            echo <<<HTML
+            <div class="tab">
+            HTML;
+        }
 
         echo <<<HTML
         <div class="blokitem border rounded d-flex my-1">
@@ -107,5 +123,11 @@ function getRatings($limit, $gameID, $images) {
             </div>
         </div> 
         HTML;
+        $reviewNumber++;
+        if($reviewNumber === $amountReviews && $pages) {
+            echo <<<HTML
+            </div>
+            HTML;
+        }
     }
 }

@@ -43,30 +43,30 @@ if(isset($_POST['submit'])) {
 
                     $stmt->close();
 
-                    header("Location: ../index.php");
+                    header("Location:".$_SERVER['HTTP_REFERER']);
                     exit();
                 }
                 else {
                     //Account gedeactiveerd
-                    $_SESSION["notification"] = 1;
-                    header("Location: ../index.php");
+                    $_SESSION["alert"] = 1;
+                    header("Location:".$_SERVER['HTTP_REFERER']);
                 }
             }
             else {
                 //Wachtwoord onjuist
-                $_SESSION["notification"] = 3;
-                header("Location: ../index.php");
+                $_SESSION["alert"] = 3;
+                header("Location:".$_SERVER['HTTP_REFERER']);
             }
         }
         else {
             //Gebruikersnaam of email onjuist
-            $_SESSION["notification"] = 4;
-            header("Location: ../index.php");
+            $_SESSION["alert"] = 4;
+            header("Location:".$_SERVER['HTTP_REFERER']);
         }
     }
     else {
         //Doe de captcha opniew!
-        $_SESSION["notification"] = 2;
-        header("Location: ../index.php");
+        $_SESSION["alert"] = 2;
+        header("Location:".$_SERVER['HTTP_REFERER']);
     }
 } 

@@ -1,7 +1,7 @@
 <?php
 
-if (isset($_SESSION["notification"])) {
-    switch ($_SESSION["notification"]) {
+if (isset($_SESSION["alert"])) {
+    switch ($_SESSION["alert"]) {
     // Review
     case 'R0':
         echo' 
@@ -57,7 +57,7 @@ if (isset($_SESSION["notification"])) {
         echo "Doe de captcha opnieuw";
         break;
     }
-    unset($_SESSION['notification']);
+    unset($_SESSION['alert']);
 }
 
 ?>

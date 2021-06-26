@@ -38,7 +38,7 @@ include $template['header'];
                 <h2>Welkom op onze hoofdpagina</h2>
                     <img id="jumbo" src="images/vaderbloem.jpg">
                     <h1 class='text-center'>Nieuwste recensies</h1>
-                    <?php echo getRatings('3', false, true);?>
+                    <?php echo getRatings(3, false, true, false);?>
             </div>
             <div id="reclame">
                 <h2>Kies een game</h2>
