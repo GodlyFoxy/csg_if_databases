@@ -17,6 +17,8 @@ function captcha($token, $SECRET_KEY, $VERIFY_URL) {
     $response = curl_exec($verification); //Voor de curl uit
     $responseData = json_decode($response);//decodeer de response zodat php het begrijpt
 
+    error_log($responseData->success, 0);
+
     return $responseData;
 }
 //END OF FILE

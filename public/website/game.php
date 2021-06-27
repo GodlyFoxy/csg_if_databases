@@ -18,19 +18,6 @@ include $template['header'];
 ?>
   <body>
     <div id="container">
-        <div class="d-flex align-items-center" id="menu">
-            <h3>Gamerecensies</h3>
-            <?php
-                if(!isset($_SESSION['user'])) { 
-                    echo <<<HTML
-                    <button class="btn btn-primary" id="loginbutton" data-toggle="modal" data-target="#login" type="button">
-                        Login
-                    </button>
-                    HTML;
-                }
-            ?>
-        </div>
-        <?php include('php/alert.php');?>
         <div id="hoofdpagina">
             <div id="welkom">
                 <h2 class='display-4'><?php echo $game['title'];?></h2>
@@ -42,24 +29,35 @@ include $template['header'];
                     <div class="col">
                         <h4>Developer: <?php echo $game['developer'];?></h4>
                         <div class="row align-items-center ">
-                            <h4 class="ml-3 mr-2 "> Beoordeling:</h4>
-                            <select id="avgRating" name="avgRating">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select>
+                            <h4 class="ml-3 mr-2 ">Beoordeling:</h4>
+                            <?php
+                            if (getAverageRating($gameID) == 0) {
+                                echo <<<HTML
+                                <h4><i>Geen beoordeling!</i></h4>
+                                HTML;
+                            }
+                            else {
+                                echo <<<HTML
+                                <select id="avgRating" name="avgRating">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                                <h4 class="ml-2"><?php echo getAverageRating($gameID); ?></h4>    
+                                HTML;
+                            }
+                            ?>
                             <script type="text/javascript"> 
                                 $(function() {
                                     $('#avgRating').barrating('show', {
                                         theme: 'fontawesome-stars-o',
                                         initialRating: <?php echo getAverageRating($gameID); ?>,
-                                        readonly: true
+                                        readonly: true,
                                     });
                                 });
                             </script>
-                            <h4 class="ml-2"><?php echo getAverageRating($gameID); ?></h4>    
                         </div>
                     </div>
                 </div>
@@ -67,126 +65,52 @@ include $template['header'];
                     <img class="figure-img img-fluid rounded" id="vierkant" src="images/<?php echo $gameID;?>.jpg">
                     <p class="ml-3"><?php echo $game['description'];?></p>
                 </div>
-                <form method="POST" action="php/send_review.php?gameID=<?php echo $gameID;?>">
-                    <div class="d-flex border rounded">
-                        <textarea class="col-7 ml-3 my-1" name="comment" rows="5" maxlength="255" placeholder="Type een review..."></textarea>
-                        <div class="col">
-                            <div class="row">
-                                <label class="mr-1 ml-3" for="rating">Beoordeling: </label>
-                                <select id="rating" name="rating">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
-                                <script type="text/javascript"> 
-                                    $(function() {
-                                        $('#rating').barrating('show', {
-                                            theme: 'fontawesome-stars-o'
+                <div style="position:relative">
+                
+                    <?php
+                    if(!isset($_SESSION['user'])) {
+                        echo <<<HTML
+                        <button class="btn btn-primary centerblurloginbutton" id="loginbutton" data-toggle="modal" data-target="#login" type="button">Login om een review achter te laten...</button>
+                        <form class="unselectable blur">
+                        HTML;
+                    }
+                    else {
+                        echo <<<HTML
+                        <form method="POST" action="php/send_review.php?gameID={$gameID}">
+                        HTML;
+
+                    }
+                    ?>
+                        <div class="d-flex border rounded">
+                            <textarea class="col-7 ml-3 my-1" name="comment" rows="5" maxlength="400" placeholder="Type een review..."></textarea>
+                            <div class="col">
+                                <div class="row">
+                                    <label class="mr-1 ml-3" for="rating">Beoordeling: </label>
+                                    <select id="rating" name="rating">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                    <script type="text/javascript"> 
+                                        $(function() {
+                                            $('#rating').barrating('show', {
+                                                theme: 'fontawesome-stars-o'
+                                            });
                                         });
-                                    });
-                                </script>
-                            </div>
-                            <input name="review" type="submit" value="Verstuur review">
-                            <div class="h-captcha mt-2" data-sitekey="254a11ac-8587-4306-aa5b-52e6d9f2d227"></div>
-                        </div>
-                    </div>
-                </form>
-                <?php echo getRatings(false,$gameID,false,true);?> 
-                <div class="d-flex row">
-                    <p class="text-center col" id="pageNumber">page</p>
-                    <div>
-                        <div class="row h-75 mr-3">
-                            <button class="mr-1" id="prevBtn" type="button" onclick="nextPrev(-1)">Previous</button>
-                            <button class="ml-1" id="nextBtn" type="button" onclick="nextPrev(1)">Next</button>
-                        </div>
-                    </div>
-                    <!-- Circles which indicates the steps of the form: -->
-                    <script>
-                        // Overgenomen van https://www.w3schools.com/howto/howto_js_form_steps.asp?
-                        var currentTab = 0; // Current tab is set to be the first tab (0)
-                        var x = document.getElementsByClassName("tab");
-
-                        showTab(currentTab); // Display the current tab
-                        function showTab(n) {
-                        // This function will display the specified tab of the form ...
-                        x[n].style.display = "block";
-                            // ... and fix the Previous/Next buttons:
-                            if (n == 0) {
-                                document.getElementById("prevBtn").style.display = "none";
-                            } else {
-                                document.getElementById("prevBtn").style.display = "flex";
-                            }
-
-                            if (n+1 == x.length) {
-                                document.getElementById("nextBtn").style.display = "none";
-                            } else {
-                                document.getElementById("nextBtn").style.display = "flex";
-                            }
-
-                            if(x.length <= 1) {
-                                document.getElementById("pageNumber").style.display = "none";
-                            }
-                            // ... and run a function that displays the correct step indicator:
-                            document.getElementById("pageNumber").innerHTML = (n+1)+"/"+x.length;
-                        }
-
-                        function nextPrev(n) {
-                            // This function will figure out which tab to display
-                            // Hide the current tab:
-                            x[currentTab].style.display = "none";
-                            // Increase or decrease the current tab by 1:
-                            currentTab = currentTab + n;
-                            // Otherwise, display the correct tab:
-                            showTab(currentTab);
-                        }
-                    </script>      
-                </div>
-            </div>
-
-            <div id="reclame">
-                <h2>Kies een game</h2>
-                <a href="">
-                    <img class="klein" src="images/tulpen.jpg">
-                </a>
-                <a href="">
-                    <img class="klein" src="images/hek.jpg">
-                </a>
-                <a href="">
-                    <img class="klein" src="images/1.jpg">
-                </a>
-                <a href="">
-                    <img class="klein" src="images/2.jpg">     
-                </a>           
-            </div>
-            <div class="modal fade" id="login">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Login</h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <form method="POST" action="php/login.php">
-                                <label>Gebruiker</label>
-                                <input type="text" name="gebruikersnaam" placeholder="voer uw gebruikersnaam of email in..." required><br><br>
-                                <label>Wachtwoord</label>
-                                <input type="password" name="wachtwoord" placeholder="Geef uw wachtwoord..." required>
-                                <input type="submit" name="submit"><br><br>
-                                <!-- hcaptcha -->
+                                    </script>
+                                </div>
                                 <div class="h-captcha" data-sitekey="254a11ac-8587-4306-aa5b-52e6d9f2d227"></div>
-                            </form>  
-                            <form method="POST" action="">
-                                <input type="submit" name="signup" value="Geen account? Klik hier!">
-                            </form>  
+                                <input name="review" type="submit" value="Verstuur review">
+                            </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
+                <?php echo getRatings(false,$gameID,false,true);?> 
+                
             </div>
+            <?php include($template['sideMenu']); ?>
         </div>      
     </div>
 <?php $template['footer'] ?>

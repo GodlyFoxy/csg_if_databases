@@ -30,7 +30,7 @@ if(isset($_POST['review']) && isset($gameID)) {
     $token = $_POST['h-captcha-response'];
     $responseData = captcha($token, $SECRET_KEY, $VERIFY_URL);
 
-    if($responseData->success || true) {
+    if($responseData->success) {
         //omzetten naar andere notatie
         if($row['enabled']) {
                 $stmt = $conn->prepare("INSERT INTO reviews(userID, gameID, rating, comment) VALUES (?, ?, ?, ?)");

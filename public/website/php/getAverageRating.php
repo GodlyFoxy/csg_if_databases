@@ -12,6 +12,11 @@ function getAverageRating($gameid)
     $stmt->close();
     $row = $records->fetch_assoc();
 
-    $avg = $row['avgRating'];
+    if (isset($row['avgRating'])) {
+        $avg = $row['avgRating'];
+    }
+    else {
+        $avg = 0;
+    }
     return $avg;
 }

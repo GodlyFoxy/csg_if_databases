@@ -7,11 +7,11 @@ session_start();
 
 if(isset($_POST['submit'])) {
 
-    $naam=$_POST['gebruikersnaam'];
-    $pass=$_POST['wachtwoord'];
+    $name=$_POST['username'];
+    $password=$_POST['password'];
 
     $stmt = $conn->prepare("SELECT * FROM users WHERE username=(?) OR email=(?) LIMIT 1");
-    $stmt->bind_param('ss', $naam, $naam);
+    $stmt->bind_param('ss', $name, $name);
     $stmt->execute();
 
     $records=$stmt->get_result();
@@ -26,10 +26,10 @@ if(isset($_POST['submit'])) {
     $token = $_POST['h-captcha-response'];
     $responseData = captcha($token, $SECRET_KEY, $VERIFY_URL);
 
-    if($responseData->success || true) {
+    if($responseData->success) {
         //omzetten naar andere notatie
         if (mysqli_num_rows($records) == 1){
-            if(password_verify($pass,$passwordhash)){
+            if(password_verify($password,$passwordhash)){
                 if($row['enabled']) {
                     $_SESSION['user']= $username;   
                     $stmt = $conn->prepare("UPDATE users SET lastIP=(?),lastLogin=(?) WHERE username=(?)");
